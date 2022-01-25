@@ -1,2 +1,2 @@
 # instrumentation
-Instrumentation context - onboarding devices, sites and installations. So meta-data management.
+Instrumentation context - This is in the instrument context. So it should be all about driving the instrument.
