@@ -1,2 +1,5 @@
-# instrumentation
-Instrumentation context - This is in the instrument context. So it should be all about driving the instrument.
+# Instrumentation
+This repository represents a domain of the business. This domain is the **Instrumentation** domain and contains a multitude of bounded contexts.
+
+## Aggregates
+Contains the following aggregates:
