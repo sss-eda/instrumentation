@@ -5,45 +5,58 @@ import "github.com/sss-eda/instrumentation/domain"
 // SomeApplicationService TODO
 type SomeApplicationService interface{}
 
-// Repository TODO
+// SiteStorage TODO
 type SiteStorage interface {
+	Load(domain.SiteID) (domain.Site, error)
+	Save(domain.SiteID, domain.Site) error
+}
+
+// InstrumentTypeStorage TODO
+type InstrumentTypeStorage interface {
+	Load(domain.InstrumentTypeID) (domain.InstrumentType, error)
+	Save(domain.InstrumentTypeID, domain.InstrumentType) error
 }
 
 type someApplicationService struct {
 	// ds   domain.SomeDomainService
-	repo   Repository
-	events chan domain.Event
+	sites           SiteStorage
+	instrumentTypes InstrumentTypeStorage
+	events          chan domain.Event
 }
 
-// AddInstrument TODO
+// CommissionInstrument TODO
 func (service *someApplicationService) AddInstrument(
 	siteID domain.SiteID,
-	typeID domain.InstrumentTypeID,
-	iteration uint8,
+	instrumentTypeID domain.InstrumentTypeID,
 ) error {
-	site, err := service.repo.Load(siteID)
+	site, err := service.sites.Load(siteID)
 	if err != nil {
 		return err
 	}
 
-	instrumentType, err := service.repo.Load(instrumentTypeID)
-	if err != nil {
-		return err
-	}
+	err = site.CommissionInstrument(instrumentID)
 
-	instrument, err := domain.NewInstrument(
-		site,
-		instrumentType,
-		iteration,
-	)
-	if err != nil {
-		return err
-	}
-
-	err = instrument.Add(service.events)
-	if err != nil {
-		return err
-	}
-
-	return err
 }
+
+// // AddInstrument TODO
+// func (service *someApplicationService) AddInstrument(
+// 	siteID domain.SiteID,
+// 	typeID domain.InstrumentTypeID,
+// 	iteration uint8,
+// ) error {
+// 	instrument, err := domain.NewInstrument(
+// 		site,
+// 		instrumentType,
+// 		iteration,
+// 	)
+// 	if err != nil {
+// 		return err
+// 	}
+
+// 	err = instrument.Add(service.events)
+// 	if err != nil {
+// 		return err
+// 	}
+
+// 	return err
+// }

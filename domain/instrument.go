@@ -1,6 +1,10 @@
 package domain
 
-import "fmt"
+// Instrument TODO
+type Instrument struct {
+	id        InstrumentID
+	iteration uint8
+}
 
 // InstrumentID TODO
 type InstrumentID interface {
@@ -8,40 +12,44 @@ type InstrumentID interface {
 	String() string
 }
 
-// Instrument TODO
-type Instrument struct {
-	site           site
-	instrumentType instrumentType
-	commands       []Command
-	iteration      uint8
-	sequence       uint64
+// NoInstrumentID TODO
+type NoInstrumentID struct{}
+
+// String TODO
+func (NoInstrumentID) String() string {
+	return "Currently not installed at any site."
 }
 
-// NewInstrument TODO
-func NewInstrument(
-	site Site,
-	instrumentType InstrumentType,
-	iteration uint8,
-) (*Instrument, error) {
-	instrument := Instrument{
-		site:           site,
-		instrumentType: isntrumentType,
+// Equals TODO
+func (NoInstrumentID) Equals(
+	otherInstrumentID InstrumentID,
+) bool {
+	var equals bool
+
+	switch otherInstrumentID.(type) {
+	case NoInstrumentID:
+		equals = true
+	default:
+		equals = false
 	}
+
+	return equals
 }
 
-// Add TODO
-func (instrument *Instrument) Add(
-	events chan<- Event,
-) error {
-	if instrument.sequence > 0 {
-		return fmt.Errorf("Instrument already exists")
-	}
+// Relocate TODO
+// func (instrument *Instrument) Relocate(
+// 	events chan<- Event,
+// 	newSite Site,
+// ) error {
+// 	if newSite.ID().Equals(instrument.SiteID) {
+// 		return fmt.Errorf("Instrument already at this site")
+// 	}
 
-	events <- InstrumentAddedEvent{
-		SiteID:           instrument.site.ID(),
-		InstrumentTypeID: instrument.instrumentType.ID(),
-		Iteration:        instrument.iteration,
-	}
+// 	event := InstrumentRelocatedEvent{
+// 		SiteID: newSiteID,
+// 	}
 
-	return nil
-}
+// 	events <- event
+
+// 	return nil
+// }
