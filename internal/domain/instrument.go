@@ -5,9 +5,15 @@ import (
 	"github.com/sss-eda/instrumentation/pkg/domain/site"
 )
 
+// InstrumentRepository TODO
+type InstrumentRepository interface {
+	Load(InstrumentID) (Instrument, error)
+	Save(InstrumentID, Instrument) error
+}
+
 // Instrument TODO
 type Instrument interface {
-	Rename(Name) error
+	Rename(InstrumentName) error
 	Relocate(site.ID) error
 	ChangeInstrumentType(instrumentType.ID) error
 	Deactivate() error

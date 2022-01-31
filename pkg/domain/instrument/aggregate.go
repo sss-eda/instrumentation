@@ -7,6 +7,7 @@ import (
 
 // Aggregate TODO
 type Aggregate interface {
+	Add(Name, site.ID, instrumentType.ID) error
 	Rename(Name) error
 	Relocate(site.ID) error
 	ChangeInstrumentType(instrumentType.ID) error

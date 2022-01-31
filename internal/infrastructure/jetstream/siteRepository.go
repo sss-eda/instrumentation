@@ -10,8 +10,7 @@ import (
 
 // EventStore TODO
 type EventStore struct {
-	identifier identification.Service
-	js         nats.JetStream
+	js nats.JetStream
 }
 
 // NewID TODO

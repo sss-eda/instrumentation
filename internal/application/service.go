@@ -6,40 +6,40 @@ import (
 	"github.com/sss-eda/instrumentation/pkg/domain/site"
 )
 
-// Service TODO
-type Service struct {
-	instruments     InstrumentRepository
-	sites           SiteRepository
-	instrumentTypes InstrumentTypeRepository
-}
-
-// NewService TODO
-func NewService(
-	instrumentRepository InstrumentRepository,
-	siteRepository SiteRepository,
-	instrumentTypeRepository InstrumentTypeRepository,
-) (*Service, error) {
-	return &Service{
-		instruments:     instrumentRepository,
-		sites:           siteRepository,
-		instrumentTypes: instrumentTypeRepository,
-	}, nil
-}
-
 // AddInstrument TODO
-func (service *Service) AddInstrument(
-	instrumentName instrument.Name,
-	instrumentTypeID instrumentType.ID,
-	siteID site.ID,
-) error {
-	myInstrumentID, myInstrument := service.instruments.New()
+func AddInstrumentUseCase(
+	factory instrument.Factory,
+	storage instrument.Storage,
+) (
+	func(instrument.Name, instrumentType.ID, site.ID) error,
+	error,
+) {
+	return func(
+		name instrument.Name,
+		instrumentTypeID instrumentType.ID,
+		siteID site.ID,
+	) error {
+		id, aggregate, err := factory.New()
+		if err != nil {
+			return err
+		}
 
-	err := service.instruments.Save(myInstrumentID, myInstrument)
-	if err != nil {
-		return err
-	}
+		err = aggregate.Add(
+			name,
+			siteID,
+			instrumentTypeID,
+		)
+		if err != nil {
+			return err
+		}
 
-	return nil
+		err = storage.Save(id, aggregate)
+		if err != nil {
+			return err
+		}
+
+		return nil
+	}, nil
 }
 
 // RelocateInstrument TODO
