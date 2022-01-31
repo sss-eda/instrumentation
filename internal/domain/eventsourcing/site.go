@@ -1,63 +1,97 @@
-package domain
+package eventsourcing
 
 import (
 	"fmt"
+	"sync"
 
-	"github.com/sss-eda/instrumentation/pkg/domain/site"
+	"github.com/sss-eda/instrumentation/internal/domain"
 )
 
 // Site - This will be the aggregate root
 type Site struct {
-	id           site.ID
-	name         site.Name
-	abbreviation site.Abbreviation
-	events       []Event
+	sync.Mutex
+	id           domain.SiteID
+	name         domain.SiteName
+	abbreviation domain.SiteAbbreviation
+	changes      []Event
+	sequence     uint64
+}
+
+func (site *Site) mutate(
+	event Event,
+) {
+	switch e := event.(type) {
+	case SiteRenamedEvent:
+		site.name = e.NewName
+	case SiteAbbreviationChangedEvent:
+		site.abbreviation = e.NewAbbreviation
+	default:
+		return
+	}
+
+	site.sequence++
+}
+
+func (site *Site) raise(
+	event Event,
+) {
+	site.Lock()
+	defer site.Unlock()
+
+	site.mutate(event)
+	site.changes = append(site.changes, event)
 }
 
 // NewSite TODO
-func NewSite() (*Site, error) {
-	return &Site{
+func NewSite(
+	events []Event,
+) (*Site, error) {
+	site := &Site{
+		Mutex:        sync.Mutex{},
 		id:           NoSiteID{},
-		name:         site.Name(""),
-		abbreviation: site.Abbreviation(""),
-		events:       []Event{},
-	}, nil
+		name:         domain.SiteName(""),
+		abbreviation: domain.SiteAbbreviation(""),
+		changes:      []Event{},
+		sequence:     0,
+	}
+
+	for _, event := range events {
+		site.raise(event)
+	}
+
+	return site, nil
 }
 
 // Rename TODO
-func (ar Site) Rename(
-	newName site.Name,
+func (site *Site) Rename(
+	newName domain.SiteName,
 ) error {
 	if newName == "" {
 		return fmt.Errorf("name can't be an empty string")
-	} else if newName == ar.name {
+	} else if newName == site.name {
 		return fmt.Errorf("the new name is the same as the previous one")
 	}
 
-	event := SiteRenamedEvent{
+	site.raise(SiteRenamedEvent{
 		NewName: newName,
-	}
-
-	ar.events = append(ar.events, event)
+	})
 
 	return nil
 }
 
 // ChangeAbbreviation - TODO
-func (ar Site) ChangeAbbreviation(
-	newAbbreviation site.Abbreviation,
+func (site *Site) ChangeAbbreviation(
+	newAbbreviation domain.SiteAbbreviation,
 ) error {
 	if newAbbreviation == "" {
 		return fmt.Errorf("abbreviation can't be an empty string")
-	} else if newAbbreviation == ar.abbreviation {
+	} else if newAbbreviation == site.abbreviation {
 		return fmt.Errorf("the new name is the same as the previous one")
 	}
 
-	event := SiteAbbreviationChangedEvent{
+	site.raise(SiteAbbreviationChangedEvent{
 		NewAbbreviation: newAbbreviation,
-	}
-
-	ar.events = append(ar.events, event)
+	})
 
 	return nil
 }
@@ -72,7 +106,7 @@ func (NoSiteID) String() string {
 
 // Equals TODO
 func (NoSiteID) Equals(
-	otherSiteID site.ID,
+	otherSiteID domain.SiteID,
 ) bool {
 	var equals bool
 

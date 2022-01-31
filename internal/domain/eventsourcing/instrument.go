@@ -1,91 +1,90 @@
-package domain
+package eventsourcing
 
 import (
-	"github.com/sss-eda/instrumentation/pkg/domain/instrument"
-	"github.com/sss-eda/instrumentation/pkg/domain/instrumentType"
+	"github.com/sss-eda/instrumentation/internal/domain"
 	"github.com/sss-eda/instrumentation/pkg/domain/site"
 )
 
 // Instrument TODO
 type Instrument struct {
-	id               instrument.ID
-	instrumentTypeID instrumentType.ID
-	siteID           site.ID
-	name             instrument.Name
+	id               domain.InstrumentID
+	instrumentTypeID domain.InstrumentTypeID
+	siteID           domain.SiteID
+	name             domain.InstrumentName
 	events           []Event
 }
 
 // NewInstrument TODO
-func NewInstrument() instrument.Aggregate {
+func NewInstrument() *Instrument {
 	return &Instrument{
 		id:               NoInstrumentID{},
 		instrumentTypeID: NoInstrumentTypeID{},
 		siteID:           NoSiteID{},
-		name:             instrument.Name(""),
+		name:             domain.InstrumentName(""),
 		events:           []Event{},
 	}
 }
 
 // Activate TODO
-func (ar *Instrument) Activate() error {
+func (instrument *Instrument) Activate() error {
 	event := InstrumentActivatedEvent{
-		InstrumentID: ar.id,
+		InstrumentID: domain.Instrumentid,
 	}
 
-	ar.events = append(ar.events, event)
+	instrument.changes = append(domain.Instrumentevents, event)
 
 	return nil
 }
 
 // Deactivate TODO
-func (ar *Instrument) Deactivate() error {
+func (instrument *Instrument) Deactivate() error {
 	event := InstrumentDeactivatedEvent{
-		InstrumentID: ar.id,
+		InstrumentID: domain.Instrumentid,
 	}
 
-	ar.events = append(ar.events, event)
+	domain.Instrumentevents = append(domain.Instrumentevents, event)
 
 	return nil
 }
 
 // Relocate TODO
-func (ar *Instrument) Relocate(
+func (instrument *Instrument) Relocate(
 	newSiteID site.ID,
 ) error {
 	event := InstrumentRelocatedEvent{
-		InstrumentID: ar.id,
+		InstrumentID: domain.Instrumentid,
 		NewSiteID:    newSiteID,
 	}
 
-	ar.events = append(ar.events, event)
+	domain.Instrumentevents = append(domain.Instrumentevents, event)
 
 	return nil
 }
 
 // Rename TODO
-func (ar *Instrument) Rename(
-	newName instrument.Name,
+func (instrument *Instrument) Rename(
+	newName domain.InstrumentName,
 ) error {
 	event := InstrumentRenamedEvent{
-		InstrumentID: ar.id,
+		InstrumentID: domain.Instrumentid,
 		NewName:      newName,
 	}
 
-	ar.events = append(ar.events, event)
+	domain.Instrumentevents = append(domain.Instrumentevents, event)
 
 	return nil
 }
 
 // ChangeInstrumentType TODO
-func (ar *Instrument) ChangeInstrumentType(
-	instrumentTypeID instrumentType.ID,
+func (instrument *Instrument) ChangeInstrumentType(
+	newInstrumentTypeID domain.InstrumentTypeID,
 ) error {
 	event := InstrumentTypeChangedEvent{
-		InstrumentID:        ar.id,
-		NewInstrumentTypeID: instrumentTypeID,
+		InstrumentID:     instrument.ID,
+		InstrumentTypeID: newInstrumentTypeID,
 	}
 
-	ar.events = append(ar.events, event)
+	domain.Instrumentevents = append(domain.Instrumentevents, event)
 
 	return nil
 }
@@ -100,7 +99,7 @@ func (NoInstrumentID) String() string {
 
 // Equals TODO
 func (NoInstrumentID) Equals(
-	otherInstrumentID instrument.ID,
+	otherInstrumentID domain.InstrumentID,
 ) bool {
 	var equals bool
 

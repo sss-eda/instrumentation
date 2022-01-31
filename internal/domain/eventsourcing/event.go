@@ -1,9 +1,7 @@
-package domain
+package eventsourcing
 
 import (
-	"github.com/sss-eda/instrumentation/pkg/domain/instrument"
-	"github.com/sss-eda/instrumentation/pkg/domain/instrumentType"
-	"github.com/sss-eda/instrumentation/pkg/domain/site"
+	"github.com/sss-eda/instrumentation/internal/domain"
 )
 
 // Event TODO
@@ -11,51 +9,52 @@ type Event interface{}
 
 // InstrumentCommissionedEvent TODO
 type InstrumentCommissionedEvent struct {
-	InstrumentID     instrument.ID
-	InstrumentTypeID instrumentType.ID
+	InstrumentID     domain.InstrumentID
+	InstrumentTypeID domain.InstrumentTypeID
 	Iteration        uint8
 }
 
+// SiteAbbreviationChangedEvent TODO
 type SiteAbbreviationChangedEvent struct {
-	NewAbbreviation site.Abbreviation
+	NewAbbreviation domain.SiteAbbreviation
 }
 
 // InstrumentRelocatedEvent TODO
 type InstrumentRelocatedEvent struct {
-	InstrumentID instrument.ID
-	NewSiteID    site.ID
+	InstrumentID domain.InstrumentID
+	NewSiteID    domain.SiteID
 }
 
 // InstrumentTypeRenamedEvent TODO
 type InstrumentTypeRenamedEvent struct {
-	InstrumentTypeID instrumentType.ID
-	NewName          instrumentType.Name
+	InstrumentTypeID domain.InstrumentTypeID
+	NewName          domain.InstrumentTypeName
 }
 
 // SiteRenamedEvent TODO
 type SiteRenamedEvent struct {
-	SiteID  site.ID
-	NewName site.Name
+	SiteID  domain.SiteID
+	NewName domain.SiteName
 }
 
 // InstrumentActivatedEvent TODO
 type InstrumentActivatedEvent struct {
-	InstrumentID instrument.ID
+	InstrumentID domain.InstrumentID
 }
 
 // InstrumentDeactivatedEvent TODO
 type InstrumentDeactivatedEvent struct {
-	InstrumentID instrument.ID
+	InstrumentID domain.InstrumentID
 }
 
 // InstrumentRenamedEvent TODO
 type InstrumentRenamedEvent struct {
-	InstrumentID instrument.ID
-	NewName      instrument.Name
+	InstrumentID domain.InstrumentID
+	NewName      domain.InstrumentName
 }
 
 // InstrumentTypeChangedEvent TODO
 type InstrumentTypeChangedEvent struct {
-	InstrumentID        instrument.ID
-	NewInstrumentTypeID instrumentType.ID
+	InstrumentID        domain.InstrumentID
+	NewInstrumentTypeID domain.InstrumentTypeID
 }

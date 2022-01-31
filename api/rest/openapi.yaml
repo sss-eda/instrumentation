@@ -1,0 +1,201 @@
+openapi: 3.1.0
+servers:
+  - url: /v1
+info:
+  description: |-
+    This is an API to talk to this SANSA Space Science - EDA instrumentation
+    management service.
+  version: 1.0.0
+  title: SSS-EDA OpenAPI
+  termsOfService: 'https://sansa.dev/terms/'
+  contact:
+    email: sschoeman94@gmail.com
+  license:
+    name: Apache 2.0
+    url: 'http://sansa.dev/licenses/LICENSE.html'
+tags:
+  - name: instrument
+  - name: instrumentType
+  - name: site
+paths:
+  /instrument:
+    post:
+      tags:
+        - instrument
+      summary: Register a new instrument
+      description: Register a new instrument
+      operationId: addInstrument
+      responses:
+        '200':
+          description: Successful operaton
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Instrument'
+        '405':
+          description: Invalid input
+      security:
+        - auth:
+          - 'write:instrument'
+          - 'read:instrument'
+      requestBody:
+        description: Register a new instrument
+        required: true
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/Instrument'
+  /instrumentType:
+    post:
+      tags:
+        - instrumentType
+      summary: Register a new instrument type
+      description: Register a new instrument type
+      operationId: addInstrumentType
+      responses:
+        '200':
+          description: Successful operaton
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InstrumentType'
+        '405':
+          description: Invalid input
+      security:
+        - auth:
+          - 'write:instrumentType'
+          - 'read:instrumentType'
+      requestBody:
+        description: Register a new instrument type
+        required: true
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/InstrumentType'
+  /site/{id}:
+    get:
+      tags:
+        - site
+      summary: Get a site by its ID
+      description: Get a site by its ID
+      operationId: getSite
+      responses:
+        '200':
+          description: Successful operaton
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Site'
+        '405':
+          description: Invalid input
+      security:
+        - auth:
+          - 'read:site'
+      requestBody:
+        description: Get a site by its ID
+        required: true
+        content:
+          application/json:
+            schema: 
+              properties:
+                id:
+                  type: string
+  /sites:
+    get:
+      tags:
+        - site
+      summary: List all sites
+      description: List all sites
+      operationId: listSites
+      responses:
+        '200':
+          description: Successful operaton
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Site'
+        '405':
+          description: Invalid input
+      security:
+        - auth:
+          - 'read:site'
+    post:
+      tags:
+        - site
+      summary: Register a new site
+      description: Register a new site
+      operationId: addSite
+      responses:
+        '200':
+          description: Successful operaton
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Site'
+        '405':
+          description: Invalid input
+      security:
+        - auth:
+          - 'write:site'
+          - 'read:site'
+      requestBody:
+        description: Register a new site
+        required: true
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/Site'
+    put:
+      tags:
+        - site
+      summary: Update an existing site
+      description: Update an existing site
+      operationId: updateSite
+      responses:
+        '200':
+          description: Successful operaton
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Site'
+        '405':
+          description: Invalid input
+      security:
+        - auth:
+          - 'write:site'
+          - 'read:site'
+      requestBody:
+        description: Update an existing site
+        required: true
+        content:
+          application/json:
+            schema: 
+              $ref: '#/components/schemas/Site'
+components:
+  schemas:
+    Instrument:
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        siteID:
+          type: string
+        instrumentTypeID:
+          type: string
+    InstrumentType:
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        abbreviation:
+          type: string
+    Site:
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        abbreviation:
+          type: string

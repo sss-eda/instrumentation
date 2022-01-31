@@ -1,36 +1,36 @@
-package domain
+package eventsourcing
 
 import (
 	"fmt"
 
-	"github.com/sss-eda/instrumentation/pkg/domain/instrumentType"
+	"github.com/sss-eda/instrumentation/internal/domain"
 )
 
 // InstrumentType TODO
 type InstrumentType struct {
-	id           instrumentType.ID
-	name         instrumentType.Name
-	abbreviation instrumentType.Abbreviation
+	id           domain.InstrumentTypeID
+	name         domain.InstrumentTypeName
+	abbreviation domain.InstrumentTypeAbbreviation
 }
 
 // Rename TODO
-func (ar InstrumentType) Rename(
-	newName instrumentType.Name,
+func (instrumentType InstrumentType) Rename(
+	newName domain.InstrumentTypeName,
 ) error {
 	if len(newName) < 1 {
 		return fmt.Errorf("name may not be an empty string")
 	}
 
-	ar.name = newName
+	instrumentType.name = newName
 
 	return nil
 }
 
 // ChangeAbbreviation TODO
-func (ar *InstrumentType) ChangeAbbreviation(
-	newAbbreviation instrumentType.Abbreviation,
+func (instrumentType *InstrumentType) ChangeAbbreviation(
+	newAbbreviation domain.InstrumentTypeAbbreviation,
 ) error {
-	ar.abbreviation = newAbbreviation
+	instrumentType.abbreviation = newAbbreviation
 
 	return nil
 }
@@ -45,7 +45,7 @@ func (NoInstrumentTypeID) String() string {
 
 // Equals TODO
 func (NoInstrumentTypeID) Equals(
-	otherInstrumentTypeID instrumentType.ID,
+	otherInstrumentTypeID domain.InstrumentTypeID,
 ) bool {
 	var equals bool
 
