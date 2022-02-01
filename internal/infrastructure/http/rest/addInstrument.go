@@ -12,7 +12,7 @@ import (
 
 // AddInstrument TODO
 func AddInstrument(
-	useCase application.InstrumentAdder,
+	service application.InstrumentAdder,
 ) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		request := AddInstrumentRequest{}

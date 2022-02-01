@@ -1,4 +1,4 @@
-package application
+package domain
 
 import (
 	"github.com/sss-eda/instrumentation/pkg/domain/instrument"
@@ -9,14 +9,19 @@ type ActivateInstrumentInput struct {
 	InstrumentID instrument.ID
 }
 
+// InstrumentActivator TODO
+type InstrumentActivator interface {
+	ActivateInstrument(ActivateInstrumentInput) error
+}
+
 // ActivateInstrumentMutation TODO
 func ActivateInstrumentMutation(
 	storage instrument.Storage,
 ) (
-	func(ActivateInstrumentInput) error,
+	instrumentation.InstrumentActivator,
 	error,
 ) {
-	return func(input ActivateInstrumentInput) error {
+	return func(input instrumentation.ActivateInstrumentInput) error {
 		aggregate, err := storage.Load(input.InstrumentID)
 		if err != nil {
 			return err

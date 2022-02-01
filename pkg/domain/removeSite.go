@@ -1,4 +1,4 @@
-package application
+package domain
 
 import (
 	"github.com/sss-eda/instrumentation/pkg/domain/site"

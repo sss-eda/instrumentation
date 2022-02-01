@@ -1,17 +1,24 @@
 package application
 
 import (
+	"github.com/sss-eda/instrumentation/pkg/domain"
 	"github.com/sss-eda/instrumentation/pkg/domain/instrument"
 	"github.com/sss-eda/instrumentation/pkg/domain/instrumentType"
 	"github.com/sss-eda/instrumentation/pkg/domain/site"
 )
 
-// AddInstrument TODO
+// type Service struct {
+// 	instruments Repository[Instrument]
+// 	sites Repository[Sites]
+// 	instrumentTypes Repository[InstrumentType]
+// }
+
+// AddInstrumentUseCase TODO
 func AddInstrumentUseCase(
 	factory instrument.Factory,
 	storage instrument.Storage,
 ) (
-	func(instrument.Name, instrumentType.ID, site.ID) error,
+	func(domain.AddInstrumentInput) error,
 	error,
 ) {
 	return func(
