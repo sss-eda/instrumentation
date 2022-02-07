@@ -1,17 +1,15 @@
 package main
 
-import "net/http"
-
 func main() {
-	http.HandleFunc(
-		"/instrument/activate",
-		rest.ActivateInstrument(
-			instrumentation.ActivateInstrument(nats.InstrumentFactory{})),
-	)
+	// http.HandleFunc(
+	// 	"/instrument/activate",
+	// 	rest.ActivateInstrument(
+	// 		instrumentation.ActivateInstrument(nats.InstrumentFactory{})),
+	// )
 
-	http.HandleFunc(
-		"" 
-	)
+	// http.HandleFunc(
+	// 	""
+	// )
 }
 
 // func main() {

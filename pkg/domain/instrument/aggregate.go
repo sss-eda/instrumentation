@@ -13,4 +13,5 @@ type Aggregate interface {
 	ChangeInstrumentType(instrumentType.ID) error
 	Deactivate() error
 	Activate() error
+	Configure(Configuration) error
 }

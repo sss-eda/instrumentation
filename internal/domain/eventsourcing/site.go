@@ -1,121 +1,114 @@
 package eventsourcing
 
-import (
-	"fmt"
-	"sync"
+// // Site - This will be the aggregate root
+// type Site struct {
+// 	sync.Mutex
+// 	id           domain.SiteID
+// 	name         domain.SiteName
+// 	abbreviation domain.SiteAbbreviation
+// 	changes      []Event
+// 	sequence     uint64
+// }
 
-	"github.com/sss-eda/instrumentation/internal/domain"
-)
+// func (site *Site) mutate(
+// 	event Event,
+// ) {
+// 	switch e := event.(type) {
+// 	case SiteRenamedEvent:
+// 		site.name = e.NewName
+// 	case SiteAbbreviationChangedEvent:
+// 		site.abbreviation = e.NewAbbreviation
+// 	default:
+// 		return
+// 	}
 
-// Site - This will be the aggregate root
-type Site struct {
-	sync.Mutex
-	id           domain.SiteID
-	name         domain.SiteName
-	abbreviation domain.SiteAbbreviation
-	changes      []Event
-	sequence     uint64
-}
+// 	site.sequence++
+// }
 
-func (site *Site) mutate(
-	event Event,
-) {
-	switch e := event.(type) {
-	case SiteRenamedEvent:
-		site.name = e.NewName
-	case SiteAbbreviationChangedEvent:
-		site.abbreviation = e.NewAbbreviation
-	default:
-		return
-	}
+// func (site *Site) raise(
+// 	event Event,
+// ) {
+// 	site.Lock()
+// 	defer site.Unlock()
 
-	site.sequence++
-}
+// 	site.mutate(event)
+// 	site.changes = append(site.changes, event)
+// }
 
-func (site *Site) raise(
-	event Event,
-) {
-	site.Lock()
-	defer site.Unlock()
+// // NewSite TODO
+// func NewSite(
+// 	events []Event,
+// ) (*Site, error) {
+// 	site := &Site{
+// 		Mutex:        sync.Mutex{},
+// 		id:           NoSiteID{},
+// 		name:         domain.SiteName(""),
+// 		abbreviation: domain.SiteAbbreviation(""),
+// 		changes:      []Event{},
+// 		sequence:     0,
+// 	}
 
-	site.mutate(event)
-	site.changes = append(site.changes, event)
-}
+// 	for _, event := range events {
+// 		site.raise(event)
+// 	}
 
-// NewSite TODO
-func NewSite(
-	events []Event,
-) (*Site, error) {
-	site := &Site{
-		Mutex:        sync.Mutex{},
-		id:           NoSiteID{},
-		name:         domain.SiteName(""),
-		abbreviation: domain.SiteAbbreviation(""),
-		changes:      []Event{},
-		sequence:     0,
-	}
+// 	return site, nil
+// }
 
-	for _, event := range events {
-		site.raise(event)
-	}
+// // Rename TODO
+// func (site *Site) Rename(
+// 	newName domain.SiteName,
+// ) error {
+// 	if newName == "" {
+// 		return fmt.Errorf("name can't be an empty string")
+// 	} else if newName == site.name {
+// 		return fmt.Errorf("the new name is the same as the previous one")
+// 	}
 
-	return site, nil
-}
+// 	site.raise(SiteRenamedEvent{
+// 		NewName: newName,
+// 	})
 
-// Rename TODO
-func (site *Site) Rename(
-	newName domain.SiteName,
-) error {
-	if newName == "" {
-		return fmt.Errorf("name can't be an empty string")
-	} else if newName == site.name {
-		return fmt.Errorf("the new name is the same as the previous one")
-	}
+// 	return nil
+// }
 
-	site.raise(SiteRenamedEvent{
-		NewName: newName,
-	})
+// // ChangeAbbreviation - TODO
+// func (site *Site) ChangeAbbreviation(
+// 	newAbbreviation domain.SiteAbbreviation,
+// ) error {
+// 	if newAbbreviation == "" {
+// 		return fmt.Errorf("abbreviation can't be an empty string")
+// 	} else if newAbbreviation == site.abbreviation {
+// 		return fmt.Errorf("the new name is the same as the previous one")
+// 	}
 
-	return nil
-}
+// 	site.raise(SiteAbbreviationChangedEvent{
+// 		NewAbbreviation: newAbbreviation,
+// 	})
 
-// ChangeAbbreviation - TODO
-func (site *Site) ChangeAbbreviation(
-	newAbbreviation domain.SiteAbbreviation,
-) error {
-	if newAbbreviation == "" {
-		return fmt.Errorf("abbreviation can't be an empty string")
-	} else if newAbbreviation == site.abbreviation {
-		return fmt.Errorf("the new name is the same as the previous one")
-	}
+// 	return nil
+// }
 
-	site.raise(SiteAbbreviationChangedEvent{
-		NewAbbreviation: newAbbreviation,
-	})
+// // NoSiteID TODO
+// type NoSiteID struct{}
 
-	return nil
-}
+// // String TODO
+// func (NoSiteID) String() string {
+// 	return "Currently not installed at any site."
+// }
 
-// NoSiteID TODO
-type NoSiteID struct{}
+// // Equals TODO
+// func (NoSiteID) Equals(
+// 	otherSiteID domain.SiteID,
+// ) bool {
+// 	var equals bool
 
-// String TODO
-func (NoSiteID) String() string {
-	return "Currently not installed at any site."
-}
+// 	switch otherSiteID.(type) {
+// 	case NoSiteID:
+// 		equals = true
+// 	default:
+// 		equals = false
+// 	}
 
-// Equals TODO
-func (NoSiteID) Equals(
-	otherSiteID domain.SiteID,
-) bool {
-	var equals bool
-
-	switch otherSiteID.(type) {
-	case NoSiteID:
-		equals = true
-	default:
-		equals = false
-	}
-
-	return equals
-}
+// 	return equals
+// }

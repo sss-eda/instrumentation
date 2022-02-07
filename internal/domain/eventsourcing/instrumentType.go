@@ -1,60 +1,54 @@
 package eventsourcing
 
-import (
-	"fmt"
+// // InstrumentType TODO
+// type InstrumentType struct {
+// 	id           domain.InstrumentTypeID
+// 	name         domain.InstrumentTypeName
+// 	abbreviation domain.InstrumentTypeAbbreviation
+// }
 
-	"github.com/sss-eda/instrumentation/internal/domain"
-)
+// // Rename TODO
+// func (instrumentType InstrumentType) Rename(
+// 	newName domain.InstrumentTypeName,
+// ) error {
+// 	if len(newName) < 1 {
+// 		return fmt.Errorf("name may not be an empty string")
+// 	}
 
-// InstrumentType TODO
-type InstrumentType struct {
-	id           domain.InstrumentTypeID
-	name         domain.InstrumentTypeName
-	abbreviation domain.InstrumentTypeAbbreviation
-}
+// 	instrumentType.name = newName
 
-// Rename TODO
-func (instrumentType InstrumentType) Rename(
-	newName domain.InstrumentTypeName,
-) error {
-	if len(newName) < 1 {
-		return fmt.Errorf("name may not be an empty string")
-	}
+// 	return nil
+// }
 
-	instrumentType.name = newName
+// // ChangeAbbreviation TODO
+// func (instrumentType *InstrumentType) ChangeAbbreviation(
+// 	newAbbreviation domain.InstrumentTypeAbbreviation,
+// ) error {
+// 	instrumentType.abbreviation = newAbbreviation
 
-	return nil
-}
+// 	return nil
+// }
 
-// ChangeAbbreviation TODO
-func (instrumentType *InstrumentType) ChangeAbbreviation(
-	newAbbreviation domain.InstrumentTypeAbbreviation,
-) error {
-	instrumentType.abbreviation = newAbbreviation
+// // NoInstrumentTypeID TODO
+// type NoInstrumentTypeID struct{}
 
-	return nil
-}
+// // String TODO
+// func (NoInstrumentTypeID) String() string {
+// 	return "Currently not installed at any site."
+// }
 
-// NoInstrumentTypeID TODO
-type NoInstrumentTypeID struct{}
+// // Equals TODO
+// func (NoInstrumentTypeID) Equals(
+// 	otherInstrumentTypeID domain.InstrumentTypeID,
+// ) bool {
+// 	var equals bool
 
-// String TODO
-func (NoInstrumentTypeID) String() string {
-	return "Currently not installed at any site."
-}
+// 	switch otherInstrumentTypeID.(type) {
+// 	case NoInstrumentTypeID:
+// 		equals = true
+// 	default:
+// 		equals = false
+// 	}
 
-// Equals TODO
-func (NoInstrumentTypeID) Equals(
-	otherInstrumentTypeID domain.InstrumentTypeID,
-) bool {
-	var equals bool
-
-	switch otherInstrumentTypeID.(type) {
-	case NoInstrumentTypeID:
-		equals = true
-	default:
-		equals = false
-	}
-
-	return equals
-}
+// 	return equals
+// }

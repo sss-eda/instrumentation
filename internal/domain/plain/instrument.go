@@ -1,101 +1,93 @@
 package domain
 
-import (
-	"fmt"
+// // Instrument TODO
+// type Instrument struct {
+// 	id               instrument.ID
+// 	instrumentTypeID instrumentType.ID
+// 	siteID           site.ID
+// 	name             instrument.Name
+// 	isActive         bool
+// }
 
-	"github.com/sss-eda/instrumentation/pkg/domain/instrument"
-	"github.com/sss-eda/instrumentation/pkg/domain/instrumentType"
-	"github.com/sss-eda/instrumentation/pkg/domain/site"
-)
+// // NewInstrument TODO
+// func NewInstrument() instrument.Aggregate {
+// 	return &Instrument{
+// 		id:               NoInstrumentID{},
+// 		instrumentTypeID: NoInstrumentTypeID{},
+// 		siteID:           NoSiteID{},
+// 		name:             instrument.Name(""),
+// 	}
+// }
 
-// Instrument TODO
-type Instrument struct {
-	id               instrument.ID
-	instrumentTypeID instrumentType.ID
-	siteID           site.ID
-	name             instrument.Name
-	isActive         bool
-}
+// // Activate TODO
+// func (ar *Instrument) Activate() error {
+// 	if ar.isActive {
+// 		return fmt.Errorf("instrument is already active")
+// 	}
 
-// NewInstrument TODO
-func NewInstrument() instrument.Aggregate {
-	return &Instrument{
-		id:               NoInstrumentID{},
-		instrumentTypeID: NoInstrumentTypeID{},
-		siteID:           NoSiteID{},
-		name:             instrument.Name(""),
-	}
-}
+// 	ar.isActive = true
 
-// Activate TODO
-func (ar *Instrument) Activate() error {
-	if ar.isActive {
-		return fmt.Errorf("instrument is already active")
-	}
+// 	return nil
+// }
 
-	ar.isActive = true
+// // Deactivate TODO
+// func (ar *Instrument) Deactivate() error {
+// 	if !ar.isActive {
+// 		return fmt.Errorf("instrument is already inactive")
+// 	}
 
-	return nil
-}
+// 	ar.isActive = false
 
-// Deactivate TODO
-func (ar *Instrument) Deactivate() error {
-	if !ar.isActive {
-		return fmt.Errorf("instrument is already inactive")
-	}
+// 	return nil
+// }
 
-	ar.isActive = false
+// // Relocate TODO
+// func (ar *Instrument) Relocate(
+// 	newSiteID site.ID,
+// ) error {
+// 	ar.siteID = newSiteID
 
-	return nil
-}
+// 	return nil
+// }
 
-// Relocate TODO
-func (ar *Instrument) Relocate(
-	newSiteID site.ID,
-) error {
-	ar.siteID = newSiteID
+// // Rename TODO
+// func (ar *Instrument) Rename(
+// 	newName instrument.Name,
+// ) error {
+// 	ar.name = newName
 
-	return nil
-}
+// 	return nil
+// }
 
-// Rename TODO
-func (ar *Instrument) Rename(
-	newName instrument.Name,
-) error {
-	ar.name = newName
+// // ChangeInstrumentType TODO
+// func (ar *Instrument) ChangeInstrumentType(
+// 	instrumentTypeID instrumentType.ID,
+// ) error {
+// 	ar.instrumentTypeID = instrumentTypeID
 
-	return nil
-}
+// 	return nil
+// }
 
-// ChangeInstrumentType TODO
-func (ar *Instrument) ChangeInstrumentType(
-	instrumentTypeID instrumentType.ID,
-) error {
-	ar.instrumentTypeID = instrumentTypeID
+// // NoInstrumentID TODO
+// type NoInstrumentID struct{}
 
-	return nil
-}
+// // String TODO
+// func (NoInstrumentID) String() string {
+// 	return "Currently not installed at any site."
+// }
 
-// NoInstrumentID TODO
-type NoInstrumentID struct{}
+// // Equals TODO
+// func (NoInstrumentID) Equals(
+// 	otherInstrumentID instrument.ID,
+// ) bool {
+// 	var equals bool
 
-// String TODO
-func (NoInstrumentID) String() string {
-	return "Currently not installed at any site."
-}
+// 	switch otherInstrumentID.(type) {
+// 	case NoInstrumentID:
+// 		equals = true
+// 	default:
+// 		equals = false
+// 	}
 
-// Equals TODO
-func (NoInstrumentID) Equals(
-	otherInstrumentID instrument.ID,
-) bool {
-	var equals bool
-
-	switch otherInstrumentID.(type) {
-	case NoInstrumentID:
-		equals = true
-	default:
-		equals = false
-	}
-
-	return equals
-}
+// 	return equals
+// }

@@ -1,44 +1,37 @@
 package instrumentation
 
-import (
-	"github.com/sss-eda/instrumentation/internal/domain/eventsourcing"
+// // Instrument TODO
+// type Instrument struct {
+// 	Root instrument.Entity
+// }
 
-	"github.com/sss-eda/instrumentation/pkg/domain"
-	"github.com/sss-eda/instrumentation/pkg/domain/instrument"
-)
+// // NewInstrument TODO
+// func NewInstrument(
+// 	options ...InstrumentOption,
+// ) (domain.Instrument, error) {
+// 	instrument := Instrument{}
 
-// Instrument TODO
-type Instrument struct {
-	Root instrument.Entity
-}
+// 	var err error
+// 	for _, option := range options {
+// 		err = option(&instrument)
+// 		if err != nil {
+// 			return nil, err
+// 		}
+// 	}
 
-// NewInstrument TODO
-func NewInstrument(
-	options ...InstrumentOption,
-) (domain.Instrument, error) {
-	instrument := Instrument{}
+// 	if instrument.Root == nil {
+// 		instrument.Root = plain.NewInstrument()
+// 	}
 
-	var err error
-	for _, option := range options {
-		err = option(&instrument)
-		if err != nil {
-			return nil, err
-		}
-	}
+// 	return &instrument, nil
+// }
 
-	if instrument.Root == nil {
-		instrument.Root = plain.NewInstrument()
-	}
+// // InstrumentOption TODO
+// type InstrumentOption func(*Instrument) error
 
-	return &instrument, nil
-}
-
-// InstrumentOption TODO
-type InstrumentOption func(*Instrument) error
-
-// WithEventSourcing TODO
-func WithEventSourcing() func(*Instrument) error {
-	return func(instrument *Instrument) error {
-		instrument.Root = eventsourcing.NewInstrument()
-	}
-}
+// // WithEventSourcing TODO
+// func WithEventSourcing() func(*Instrument) error {
+// 	return func(instrument *Instrument) error {
+// 		instrument.Root = eventsourcing.NewInstrument()
+// 	}
+// }
