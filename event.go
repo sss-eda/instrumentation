@@ -1,3 +1,13 @@
 package instrumentation
 
-type Event any
+type EventID string
+
+type EventKind string
+
+type EventPayload []byte
+
+type Event struct {
+	ID      EventID      `json:"id"`
+	Kind    EventKind    `json:"kind"`
+	Payload EventPayload `json:"payload"`
+}

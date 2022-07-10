@@ -1,22 +1,28 @@
-package server
+package api
 
 import "github.com/sss-eda/instrumentation"
 
-type Repository interface {
-	GetInstrumentByID(string) (*instrumentation.Instrument, error)
+type InstrumentRepository interface {
+	GetInstrumentByID(string) (*Instrument, error)
 	CreateInstrument(string) error
 }
 
 type Service struct {
-	Repository
+	Instruments InstrumentRepository
+}
+
+func New(instruments InstrumentRepository) (*Service, error) {
+	return &Service{
+		Instruments: instruments,
+	}, nil
 }
 
 func (service *Service) RegisterInstrument(id string) error {
-	return service.Repository.CreateInstrument(id)
+	return service.Instruments.CreateInstrument(id)
 }
 
 func (service *Service) SendCommandToInstrument(id string, command *instrumentation.Command) error {
-	instrument, err := service.Repository.GetInstrumentByID(id)
+	instrument, err := service.Instruments.GetInstrumentByID(id)
 	if err != nil {
 		return err
 	}
@@ -27,7 +33,7 @@ func (service *Service) SendCommandToInstrument(id string, command *instrumentat
 }
 
 func (service *Service) GetAllInstrumentEvents(id string) ([]*instrumentation.Event, error) {
-	instrument, err := service.Repository.GetInstrumentByID(id)
+	instrument, err := service.Instruments.GetInstrumentByID(id)
 	if err != nil {
 		return nil, err
 	}
