@@ -1,0 +1,31 @@
+openapi: 3.0.3
+info:
+  title: "Instrumentation"
+  description: "OpenAPI for instrumentation service"
+  termsofService: "http://toc.sansa.dev"
+  contact:
+    name: "Stephanus Schoeman"
+    email: "sschoeman94@gmail.com"
+  version: "v0.0.0"
+servers:
+  - url: "https://dev.sansa.dev/v0"
+    description: "Development Server"
+  - url: "https://api.sansa.dev/v0"
+    description: "Production Server"
+paths:
+  /{stationID}:
+    get:
+      description: "Returns the details of the station with ID: stationID"
+      responses:
+        '200':
+          description: "Details of Station"
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  
+components:
+security:
+tags:
+externalDocs:
