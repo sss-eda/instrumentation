@@ -1,3 +1,0 @@
-package jetstream
-
-type Server
